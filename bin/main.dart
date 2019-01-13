@@ -33,7 +33,7 @@ main(List<String> arguments) {
       vscreen.add(url);
       break;
     case "seek":
-      double position = arguments[1] as double;
+      double position = double.tryParse(arguments[1]) ?? 0.0;
       vscreen.seek(position);
       break;
   }
