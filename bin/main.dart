@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:vscreen_client_core/vscreen_client_core.dart';
 
-main(List<String> arguments) {
+main(List<String> arguments) async {
   Map<String, dynamic> config = {
-    "url": "192.168.0.32",
+    "url": "127.0.0.1",
     "port": 8080,
     "password": "poop"
   };
@@ -14,32 +14,32 @@ main(List<String> arguments) {
   }
 
   var vscreen = VScreen(config["url"], config["port"]);
-  vscreen.auth(config["password"]);
+  await vscreen.auth(config["password"]);
 
   var op = arguments[0];
 
   switch (op) {
     case "play":
-      vscreen.play();
+      await vscreen.play();
       break;
     case "pause":
-      vscreen.pause();
+      await vscreen.pause();
       break;
     case "stop":
-      vscreen.stop();
+      await vscreen.stop();
       break;
     case "next":
-      vscreen.next();
+      await vscreen.next();
       break;
     case "add":
       var url = arguments[1];
-      vscreen.add(url);
+      await vscreen.add(url);
       break;
     case "seek":
       double position = double.tryParse(arguments[1]) ?? 0.0;
-      vscreen.seek(position);
+      await vscreen.seek(position);
       break;
   }
 
-  vscreen.dispose();
+  await vscreen.close();
 }
