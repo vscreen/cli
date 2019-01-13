@@ -25,6 +25,9 @@ main(List<String> arguments) {
     case "pause":
       vscreen.pause();
       break;
+    case "stop":
+      vscreen.stop();
+      break;
     case "next":
       vscreen.next();
       break;
