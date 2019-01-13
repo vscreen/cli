@@ -1,0 +1,12 @@
+name: vscreen_cli
+description: this is vscreen cli implementation
+homepage: https://github.com/vscreen
+version: 0.1.0
+authors:
+  - Lukas Herman <lherman.cs@gmail.com>
+dependencies:
+  vscreen_client_core: "0.1.2"
+environment:
+  sdk: ">=1.8.0 <3.0.0"
+executables:  
+  boilerplate: main
