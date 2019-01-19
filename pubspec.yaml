@@ -5,7 +5,12 @@ version: 0.1.0
 authors:
   - Lukas Herman <lherman.cs@gmail.com>
 dependencies:
-  vscreen_client_core: "0.1.5"
+  vscreen_client_core:
+    git:
+      url: https://github.com/vscreen/client-core.git
+      ref: 38eb2c3f05366318df01de7009b2b58090eb8e2a
+  bloc: ^0.8.0
+
 environment:
   sdk: ">=1.8.0 <3.0.0"
 executables:  
