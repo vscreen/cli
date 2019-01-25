@@ -29,9 +29,9 @@ main(List<String> arguments) async {
 
   playerBloc.state.listen((playerState) {
     print("Title        : ${playerState.title}");
-    print("Thumbnail URL: ${playerState.thumbnailURL}");
+    print("Thumbnail URL: ${playerState.thumbnail}");
     print("Position     : ${playerState.position}");
-    print("Playing      : ${playerState.isPlaying}");
+    print("Playing      : ${playerState.playing}");
   });
 
   readLine().listen((line) {

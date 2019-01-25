@@ -8,7 +8,7 @@ dependencies:
   vscreen_client_core:
     git:
       url: https://github.com/vscreen/client-core.git
-      ref: 42f21e8ba715a18e91ca3cb4112c4d2987fe4e94
+      ref: 5f9d4ebb8ec0bec096723307d70b31d20ba932ee  
   bloc: ^0.8.0
 
 environment:
