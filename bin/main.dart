@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:vscreen_client_core/vscreen_client_core.dart';
+import 'package:vscreen_client_core/vscreen.dart' as vscreen;
+
 import 'dart:convert';
 
 Stream readLine() =>
@@ -15,23 +16,25 @@ main(List<String> arguments) async {
     "password": "poop"
   };
 
-  var vscreenBloc = VScreenBloc();
-  vscreenBloc.connection
-      .dispatch(Connect(url: config["url"], port: config["port"]));
+  var connection = vscreen.ConnectionBloc();
+  var player = vscreen.PlayerBloc();
+  connection
+      .dispatch(vscreen.Connect(url: config["url"], port: config["port"]));
 
   ProcessSignal.sigint.watch().listen((ProcessSignal signal) {
     print("cleaning up");
-    vscreenBloc.dispose();
+    player.dispose();
+    connection.dispose();
     exit(0);
   });
 
-  var playerBloc = vscreenBloc.player;
-
-  playerBloc.state.listen((playerState) {
-    print("Title        : ${playerState.title}");
-    print("Thumbnail URL: ${playerState.thumbnail}");
-    print("Position     : ${playerState.position}");
-    print("Playing      : ${playerState.playing}");
+  player.state.listen((playerState) {
+    if (playerState is vscreen.NewInfo) {
+      print("Title        : ${playerState.title}");
+      print("Thumbnail URL: ${playerState.thumbnail}");
+      print("Position     : ${playerState.position}");
+      print("Playing      : ${playerState.playing}");
+    }
   });
 
   readLine().listen((line) {
@@ -40,28 +43,29 @@ main(List<String> arguments) async {
 
     switch (op) {
       case "play":
-        playerBloc.dispatch(Play());
+        player.dispatch(vscreen.Play());
         break;
       case "pause":
-        playerBloc.dispatch(Pause());
+        player.dispatch(vscreen.Pause());
         break;
       case "stop":
-        playerBloc.dispatch(Stop());
+        player.dispatch(vscreen.Stop());
         break;
       case "next":
-        playerBloc.dispatch(Next());
+        player.dispatch(vscreen.Next());
         break;
       case "add":
         var url = splitted[1];
-        playerBloc.dispatch(Add(url));
+        player.dispatch(vscreen.Add(url));
         break;
       case "seek":
         double position = double.tryParse(splitted[1]) ?? 0.0;
-        playerBloc.dispatch(Seek(position));
+        player.dispatch(vscreen.Seek(position));
         break;
     }
   }).onDone(() {
     print("cleaning up...");
-    vscreenBloc.dispose();
+    player.dispose();
+    connection.dispose();
   });
 }
