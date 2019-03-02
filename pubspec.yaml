@@ -6,12 +6,13 @@ authors:
   - Lukas Herman <lherman.cs@gmail.com>
 dependencies:
   vscreen_client_core:
-    git:
-      url: https://github.com/vscreen/client-core.git
-      ref: 4abc3a2d44ad0859f30701369c081a4b608ab355  
+    path: ../client-core
+    # git:
+    #   url: https://github.com/vscreen/client-core.git
+    #   ref: 4abc3a2d44ad0859f30701369c081a4b608ab355
   bloc: ^0.8.0
 
 environment:
   sdk: ">=1.8.0 <3.0.0"
-executables:  
+executables:
   boilerplate: main

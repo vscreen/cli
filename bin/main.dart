@@ -11,25 +11,23 @@ void processCommand(String line) {}
 
 main(List<String> arguments) async {
   Map<String, dynamic> config = {
-    "url": "127.0.0.1",
+    "url": "192.168.0.22",
     "port": 8080,
     "password": "poop"
   };
 
-  var connection = vscreen.ConnectionBloc();
-  var player = vscreen.PlayerBloc();
-  connection
-      .dispatch(vscreen.Connect(url: config["url"], port: config["port"]));
+  var bloc = vscreen.VScreenBloc();
+  var player = bloc.player;
+  bloc.connect(config["url"], config["port"]);
 
   ProcessSignal.sigint.watch().listen((ProcessSignal signal) {
     print("cleaning up");
-    player.dispose();
-    connection.dispose();
+    bloc.dispose();
     exit(0);
   });
 
-  player.state.listen((playerState) {
-    if (playerState is vscreen.NewInfo) {
+  player.listen((playerState) {
+    if (playerState is vscreen.NewPlayerInfo) {
       print("Title        : ${playerState.title}");
       print("Thumbnail URL: ${playerState.thumbnail}");
       print("Position     : ${playerState.position}");
@@ -43,29 +41,28 @@ main(List<String> arguments) async {
 
     switch (op) {
       case "play":
-        player.dispatch(vscreen.Play());
+        bloc.play();
         break;
       case "pause":
-        player.dispatch(vscreen.Pause());
+        bloc.pause();
         break;
       case "stop":
-        player.dispatch(vscreen.Stop());
+        bloc.stop();
         break;
       case "next":
-        player.dispatch(vscreen.Next());
+        bloc.next();
         break;
       case "add":
         var url = splitted[1];
-        player.dispatch(vscreen.Add(url));
+        bloc.add(url);
         break;
       case "seek":
         double position = double.tryParse(splitted[1]) ?? 0.0;
-        player.dispatch(vscreen.Seek(position));
+        bloc.seek(position);
         break;
     }
   }).onDone(() {
     print("cleaning up...");
-    player.dispose();
-    connection.dispose();
+    bloc.dispose();
   });
 }
