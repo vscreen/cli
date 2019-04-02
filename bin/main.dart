@@ -10,11 +10,16 @@ Stream readLine() =>
 void processCommand(String line) {}
 
 main(List<String> arguments) async {
-  Map<String, dynamic> config = {
-    "url": "192.168.0.22",
-    "port": 8080,
-    "password": "poop"
-  };
+  if (arguments.length != 1) {
+    print("usage: vscreen <address:port>");
+    exit(0);
+  }
+
+  var address = arguments[0].split(":");
+  var url = address[0];
+  var port = int.parse(address[1]);
+
+  Map<String, dynamic> config = {"url": url, "port": port, "password": "poop"};
 
   var bloc = vscreen.VScreenBloc();
   var player = bloc.player;
@@ -32,6 +37,7 @@ main(List<String> arguments) async {
       print("Thumbnail URL: ${playerState.thumbnail}");
       print("Position     : ${playerState.position}");
       print("Playing      : ${playerState.playing}");
+      print("Duration     : ${playerState.duration}");
     }
   });
 
